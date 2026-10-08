@@ -1,0 +1,114 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="brand-badge">📄 DocFlow</div>
+      <h1>Create Account</h1>
+      <p class="auth-subtitle">Join DocFlow to organize and manage your documents</p>
+    </div>
+
+    <app-alert
+      *ngIf="errorMessage"
+      type="error"
+      [message]="errorMessage"
+      [dismissible]="true"
+      (closed)="errorMessage = ''"
+    ></app-alert>
+
+    <app-alert
+      *ngIf="successMessage"
+      type="success"
+      [message]="successMessage"
+      [dismissible]="false"
+    ></app-alert>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <!-- Username -->
+      <div class="form-group">
+        <label for="reg-username" class="form-label">Username</label>
+        <input
+          id="reg-username"
+          type="text"
+          formControlName="username"
+          placeholder="e.g. janesmith"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
+          autocomplete="username"
+        />
+        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+          <span *ngIf="f['username'].errors['required']">Username is required.</span>
+          <span *ngIf="f['username'].errors['minlength']">Username must be at least 3 characters.</span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="reg-email" class="form-label">Email Address</label>
+        <input
+          id="reg-email"
+          type="email"
+          formControlName="email"
+          placeholder="jane@example.com"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          autocomplete="email"
+        />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <span *ngIf="f['email'].errors['required']">Email address is required.</span>
+          <span *ngIf="f['email'].errors['email']">Please enter a valid email address.</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="reg-password" class="form-label">Password</label>
+        <input
+          id="reg-password"
+          type="password"
+          formControlName="password"
+          placeholder="At least 8 characters"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          autocomplete="new-password"
+        />
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <span *ngIf="f['password'].errors['required']">Password is required.</span>
+          <span *ngIf="f['password'].errors['minlength']">Password must be at least 8 characters.</span>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="reg-confirm-password" class="form-label">Confirm Password</label>
+        <input
+          id="reg-confirm-password"
+          type="password"
+          formControlName="confirmPassword"
+          placeholder="Re-enter password"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && (f['confirmPassword'].errors || registerForm.errors?.['passwordMismatch']) }"
+          autocomplete="new-password"
+        />
+        <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+          <span *ngIf="f['confirmPassword'].errors['required']">Please confirm your password.</span>
+        </div>
+        <div *ngIf="submitted && !f['confirmPassword'].errors && registerForm.errors?.['passwordMismatch']" class="invalid-feedback">
+          <span>Passwords do not match.</span>
+        </div>
+      </div>
+
+      <!-- Register Button -->
+      <button type="submit" class="btn-submit" [disabled]="isLoading">
+        <span *ngIf="isLoading" class="spinner"></span>
+        <span *ngIf="!isLoading">Create Account</span>
+        <span *ngIf="isLoading">Creating account...</span>
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>
+        Already have an account?
+        <a routerLink="/login" class="auth-link">Log in</a>
+      </p>
+    </div>
+  </div>
+</div>

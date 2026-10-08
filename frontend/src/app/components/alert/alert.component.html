@@ -1,0 +1,16 @@
+<div *ngIf="message" [ngClass]="['alert-banner', 'alert-' + type]" role="alert">
+  <div class="alert-body">
+    <span class="alert-icon">
+      <ng-container [ngSwitch]="type">
+        <span *ngSwitchCase="'success'">✅</span>
+        <span *ngSwitchCase="'error'">⚠️</span>
+        <span *ngSwitchCase="'warning'">⚡</span>
+        <span *ngSwitchDefault>ℹ️</span>
+      </ng-container>
+    </span>
+    <span class="alert-message">{{ message }}</span>
+  </div>
+  <button *ngIf="dismissible" class="alert-close-btn" (click)="onClose()" aria-label="Close notification">
+    ✕
+  </button>
+</div>

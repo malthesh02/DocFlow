@@ -1,0 +1,78 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="brand-badge">📄 DocFlow</div>
+      <h1>Welcome Back</h1>
+      <p class="auth-subtitle">Log in to manage your documents and workflows</p>
+    </div>
+
+    <app-alert
+      *ngIf="infoMessage"
+      type="info"
+      [message]="infoMessage"
+      [dismissible]="true"
+      (closed)="infoMessage = ''"
+    ></app-alert>
+
+    <app-alert
+      *ngIf="errorMessage"
+      type="error"
+      [message]="errorMessage"
+      [dismissible]="true"
+      (closed)="errorMessage = ''"
+    ></app-alert>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <!-- Username / Email -->
+      <div class="form-group">
+        <label for="username" class="form-label">Username or Email</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="e.g. alex_dev"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
+          autocomplete="username"
+        />
+        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+          <span *ngIf="f['username'].errors['required']">Username or email is required.</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <div class="label-row">
+          <label for="password" class="form-label">Password</label>
+        </div>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          autocomplete="current-password"
+        />
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <span *ngIf="f['password'].errors['required']">Password is required.</span>
+          <span *ngIf="f['password'].errors['minlength']">Password must be at least 4 characters.</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-submit" [disabled]="isLoading">
+        <span *ngIf="isLoading" class="spinner"></span>
+        <span *ngIf="!isLoading">Log In</span>
+        <span *ngIf="isLoading">Authenticating...</span>
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>
+        Don't have an account?
+        <a routerLink="/register" class="auth-link">Create an account</a>
+      </p>
+    </div>
+  </div>
+</div>

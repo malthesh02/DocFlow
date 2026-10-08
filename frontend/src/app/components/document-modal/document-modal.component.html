@@ -1,0 +1,70 @@
+<div *ngIf="isOpen" class="modal-backdrop" (click)="onCancel()">
+  <div class="modal-dialog" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <h2>{{ document ? 'Edit Document' : 'Create New Document' }}</h2>
+      <button class="modal-close-btn" (click)="onCancel()" aria-label="Close modal">✕</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <!-- Title Field -->
+        <div class="form-group">
+          <label for="doc-title" class="form-label">
+            Title <span class="required">*</span>
+          </label>
+          <input
+            id="doc-title"
+            type="text"
+            formControlName="title"
+            placeholder="e.g. Annual Strategy Plan"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['title'].errors }"
+          />
+          <div *ngIf="submitted && f['title'].errors" class="invalid-feedback">
+            <span *ngIf="f['title'].errors['required']">Title is required.</span>
+            <span *ngIf="f['title'].errors['minlength']">Title must be at least 3 characters.</span>
+          </div>
+        </div>
+
+        <!-- Status Field -->
+        <div class="form-group">
+          <label for="doc-status" class="form-label">
+            Status <span class="required">*</span>
+          </label>
+          <select
+            id="doc-status"
+            formControlName="status"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['status'].errors }"
+          >
+            <option *ngFor="let s of statuses" [value]="s.value">
+              {{ s.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Description Field -->
+        <div class="form-group">
+          <label for="doc-desc" class="form-label">Description</label>
+          <textarea
+            id="doc-desc"
+            formControlName="description"
+            rows="4"
+            placeholder="Provide context, workflow details, or instructions..."
+            class="form-control"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isSubmitting">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          <span *ngIf="isSubmitting">Saving...</span>
+          <span *ngIf="!isSubmitting">{{ document ? 'Update Document' : 'Create Document' }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

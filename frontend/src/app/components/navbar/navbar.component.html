@@ -1,0 +1,35 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <a routerLink="/" class="nav-brand">
+      <span class="brand-icon">📄</span>
+      <span class="brand-name">DocFlow</span>
+      <span class="brand-badge">Angular</span>
+    </a>
+
+    <div class="nav-actions">
+      <!-- Authenticated links -->
+      <ng-container *ngIf="authService.isAuthenticated(); else guestLinks">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          Dashboard
+        </a>
+        <div class="user-profile">
+          <span class="user-avatar">👤</span>
+          <span class="user-name">{{ authService.currentUser()?.username }}</span>
+        </div>
+        <button class="btn-logout" (click)="onLogout()" title="Log out of DocFlow">
+          Logout
+        </button>
+      </ng-container>
+
+      <!-- Guest links -->
+      <ng-template #guestLinks>
+        <a routerLink="/login" routerLinkActive="active" class="nav-link">
+          Login
+        </a>
+        <a routerLink="/register" routerLinkActive="active" class="btn-register-link">
+          Register
+        </a>
+      </ng-template>
+    </div>
+  </div>
+</nav>
